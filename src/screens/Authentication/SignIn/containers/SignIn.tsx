@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { RootState } from '../../../../redux/modules'
-import { loadGoogleUser } from '../../../../redux/modules/user/actions'
-
-import { withGoogleSignIn, InjectedGoogleSignInProps } from '../../../../components/GoogleSignIn'
+import { googleSignIn, getGoogleUser } from '../../../../redux/modules/session/asyncActions'
 
 import SignInView from '../components/SignIn'
 import IntroLogoView from '../components/IntroLogo'
@@ -14,46 +12,36 @@ import IntroUserControlView from '../components/IntroUserControl'
 import IntroSignInControlView from '../components/IntroSignInControl'
 
 type Props = {
+    loading: boolean,
     user?: {
         email: string,
         fullName: string,
         profileImage: string,
     },
-    loadGoogleUser(user: object): any
-} & InjectedGoogleSignInProps
+    googleSignIn(): void,
+    getGoogleUser(): void
+}
 
 class SignIn extends React.Component<Props> {
-    async componentDidMount() {
-        const isSignedIn = await this.props.googleSignInStatus()
-
-        if (!isSignedIn) {
-            return
-        }
-
-        this.props.loadGoogleUser(await this.props.googleGetSignInUser())
+    componentDidMount() {
+        this.props.getGoogleUser()
     }
 
-    onGoogleSignInPress = async () => {
-        const isSignedIn = await this.props.googleSignIn()
-
-        if (!isSignedIn) {
-            return
-        }
-
-        this.props.loadGoogleUser(await this.props.googleGetSignInUser())
+    onGoogleSignInPress = () => {
+        this.props.googleSignIn()
     }
 
     render() {
         const {
+            loading,
             user,
-            googleLoading,
         } = this.props
 
         return (
             <SignInView >
                 <IntroLogoView />
                 <IntroLoadingView
-                    animating={googleLoading}
+                    animating={loading}
                 />
                 {user && (
                     <IntroUserControlView
@@ -62,7 +50,7 @@ class SignIn extends React.Component<Props> {
                         profileImage={user.profileImage}
                     />
                 )}
-                {!googleLoading && !user && (
+                {!loading && !user && (
                     <IntroSignInControlView
                         onPress={this.onGoogleSignInPress}
                     />
@@ -73,16 +61,18 @@ class SignIn extends React.Component<Props> {
 }
 
 export default connect(
-    ({ user }: RootState) => ({
-        user: user ? {
-            email: user.email,
-            fullName: `${user.firstName} ${user.lastName}`,
-            profileImage: user.photo,
-        } : null,
+    ({ session }: RootState) => ({
+        loading: session.loading,
+        user: session.user ? {
+            email: session.user.email,
+            fullName: `${session.user.firstName} ${session.user.lastName}`,
+            profileImage: session.user.photo,
+        } : undefined,
     }),
     (dispatch) => (
         bindActionCreators({
-            loadGoogleUser,
+            googleSignIn,
+            getGoogleUser,
         }, dispatch)
     ),
-)(withGoogleSignIn(SignIn))
+)(SignIn)

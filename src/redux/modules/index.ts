@@ -1,10 +1,18 @@
 import { combineReducers } from 'redux'
-import { StateType } from 'typesafe-actions'
 
-import userReducer from './user/reducer'
+import sessionReducer, {
+    State as SessionState,
+    Actions as SessionActions,
+} from './session'
 
-export const rootReducer = combineReducers({
-    user: userReducer,
+
+export type RootState = {
+    session: SessionState
+}
+
+export type RootActions =
+    | SessionActions
+
+export default combineReducers<RootState, RootActions>({
+    session: sessionReducer,
 })
-
-export type RootState = StateType<typeof rootReducer>
