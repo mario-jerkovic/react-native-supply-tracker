@@ -1,4 +1,3 @@
-// @flow
 import { createSwitchNavigator } from 'react-navigation'
 
 import ApplicationNavigation from './Application'

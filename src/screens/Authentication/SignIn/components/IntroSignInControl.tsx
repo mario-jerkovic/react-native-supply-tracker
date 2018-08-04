@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { GoogleSigninButton } from 'react-native-google-signin'

@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react'
 import {
   Text,
@@ -22,10 +21,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
   },
   subTitle: {
-    fontSize: 16,
+    fontSize: 14,
   },
 })
 
@@ -45,7 +44,6 @@ export default function IntroLogo() {
           Android Sign in With Google
         </Text >
       </View >
-
     </View >
   )
 }
