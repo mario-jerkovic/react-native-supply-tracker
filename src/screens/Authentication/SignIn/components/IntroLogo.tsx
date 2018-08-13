@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default function IntroLogo() {
+export default function IntroLogoComponent() {
   return (
     <View style={styles.container} >
       <Image

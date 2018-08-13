@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react-native",
@@ -11,6 +12,12 @@
     "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": true,
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/typings/*"
+      ]
+    },
     "target": "es6"
   },
   "exclude": [

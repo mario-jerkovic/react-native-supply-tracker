@@ -2,14 +2,17 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { RootState } from '../../../../redux/modules'
-import { googleSignIn, getGoogleUser } from '../../../../redux/modules/session/asyncActions'
+import {
+    StoreDispatcher,
+    StoreState,
+} from '../../../../redux'
+import { googleSignIn } from '../../../../redux/modules/session/asyncActions'
 
-import SignInView from '../components/SignIn'
-import IntroLogoView from '../components/IntroLogo'
-import IntroLoadingView from '../components/IntroLoading'
-import IntroUserControlView from '../components/IntroUserControl'
-import IntroSignInControlView from '../components/IntroSignInControl'
+import SignInViewComponent from '../components/SignInView'
+import IntroLogoComponent from '../components/IntroLogo'
+import IntroLoadingComponent from '../components/IntroLoading'
+import IntroUserControlComponent from '../components/IntroUserControl'
+import IntroSignInControlComponent from '../components/IntroSignInControl'
 
 type Props = {
     loading: boolean,
@@ -18,17 +21,16 @@ type Props = {
         fullName: string,
         profileImage: string,
     },
-    googleSignIn(): void,
-    getGoogleUser(): void
+    googleSignIn(silently: boolean): void,
 }
 
-class SignIn extends React.Component<Props> {
+class SignInContainer extends React.Component<Props> {
     componentDidMount() {
-        this.props.getGoogleUser()
+        this.props.googleSignIn(true)
     }
 
     onGoogleSignInPress = () => {
-        this.props.googleSignIn()
+        this.props.googleSignIn(false)
     }
 
     render() {
@@ -38,30 +40,30 @@ class SignIn extends React.Component<Props> {
         } = this.props
 
         return (
-            <SignInView >
-                <IntroLogoView />
-                <IntroLoadingView
+            <SignInViewComponent >
+                <IntroLogoComponent />
+                <IntroLoadingComponent
                     animating={loading}
                 />
                 {user && (
-                    <IntroUserControlView
+                    <IntroUserControlComponent
                         email={user.email}
                         fullName={user.fullName}
                         profileImage={user.profileImage}
                     />
                 )}
                 {!loading && !user && (
-                    <IntroSignInControlView
+                    <IntroSignInControlComponent
                         onPress={this.onGoogleSignInPress}
                     />
                 )}
-            </SignInView >
+            </SignInViewComponent >
         )
     }
 }
 
 export default connect(
-    ({ session }: RootState) => ({
+    ({ session }: StoreState) => ({
         loading: session.loading,
         user: session.user ? {
             email: session.user.email,
@@ -69,10 +71,9 @@ export default connect(
             profileImage: session.user.photo,
         } : undefined,
     }),
-    (dispatch) => (
+    (dispatch: StoreDispatcher) => (
         bindActionCreators({
             googleSignIn,
-            getGoogleUser,
         }, dispatch)
     ),
-)(SignIn)
+)(SignInContainer)

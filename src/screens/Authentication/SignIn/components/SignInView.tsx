@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function SignIn(props: Props) {
+export default function SignInViewComponent(props: Props) {
     const {
         children,
     } = props

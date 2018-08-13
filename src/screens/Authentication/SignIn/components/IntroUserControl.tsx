@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function IntroUserControl(props: Props) {
+export default function IntroUserControlComponent(props: Props) {
     const {
         email,
         fullName,

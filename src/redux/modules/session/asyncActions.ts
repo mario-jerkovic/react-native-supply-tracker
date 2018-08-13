@@ -1,48 +1,41 @@
-import { Dispatch } from '../..'
-import GoogleAuthentication from '../../api/GoogleAuthentication'
+import { StoreDispatcher, StoreState } from '../..'
+import Api from '../../api'
 
 import * as actions from './actions'
 
-const googleAuth = new GoogleAuthentication()
-
 export function getGoogleUser() {
-    return async (dispatch: Dispatch) => {
+    return async (dispatch: StoreDispatcher, getState: () => StoreState, api: Api) => {
         dispatch(actions.getUser.request())
 
         try {
-            const user = await googleAuth.getUser()
+            const user = await api.authentication.getCurrentUser()
 
             if (!user) {
                 dispatch(actions.setLoading(false))
-
             } else {
-                dispatch(actions.getUser.success({
-                    email: user.email,
-                    firstName: user.givenName,
-                    lastName: user.familyName,
-                    photo: user.photo,
-                }))
+                dispatch(actions.getUser.success(user))
             }
-        } catch (e) {
-            dispatch(actions.getUser.failure(Error('@TODO: User failure')))
+        } catch (error) {
+            dispatch(actions.getUser.failure(Error('Error: getGoogleUser @TODO')))
         }
     }
 }
 
-export function googleSignIn() {
-    return async (dispatch: Dispatch) => {
+export function googleSignIn(silently: boolean) {
+    return async (dispatch: StoreDispatcher, getState: () => StoreState, api: Api) => {
         dispatch(actions.signIn.request())
 
         try {
-            const isSignedIn = await googleAuth.signIn()
+            const accessToken = await api.authentication.signIn(silently)
 
-            if (!isSignedIn) {
+            if (!accessToken) {
                 dispatch(actions.setLoading(false))
             } else {
+                dispatch(actions.signIn.success(accessToken))
                 dispatch(getGoogleUser())
             }
-        } catch (e) {
-            dispatch(actions.getUser.failure(Error('@TODO: User failure')))
+        } catch (error) {
+            dispatch(actions.getUser.failure(Error('Error: googleSignIn @TODO')))
         }
     }
 }

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function IntroLoading(props: Props) {
+export default function IntroLoadingComponent(props: Props) {
     const { animating } = props
 
     return (

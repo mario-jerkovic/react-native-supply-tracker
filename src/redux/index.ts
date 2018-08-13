@@ -1,34 +1,37 @@
 import {
+    applyMiddleware,
     compose,
     createStore,
-    applyMiddleware,
-    Store as BaseStore,
     Dispatch as BaseDispatch,
+    Store as BaseStore,
 } from 'redux'
 import { StateType } from 'typesafe-actions'
 import thunkMiddleware, { ThunkDispatch } from 'redux-thunk'
 
-import rootReducer, { RootActions } from './modules'
+import Api from './api'
+import rootReducer, { RootActions, RootState } from './modules'
 
-export type Dispatch = BaseDispatch<RootActions> & ThunkDispatch<StoreState, void, RootActions>;
 export type Store = BaseStore<StoreState, RootActions>;
 export type StoreState = StateType<typeof rootReducer>;
+export type StoreDispatcher = BaseDispatch<RootActions> & ThunkDispatch<StoreState, Api, RootActions>;
 
-export default function configureStore() {
-    const enhancers: any[] = []
-    const middleware = [thunkMiddleware]
-    let composeEnhancers = null
+export default function configureStore(api: Api) {
+    return (initialState: StoreState): Store => {
+        const enhancers: any[] = []
+        let composeEnhancers = null
 
-    if (__DEV__) {
-        // @ts-ignore
-        composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+        if (__DEV__) {
+            // @ts-ignore
+            composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+        }
+
+        return createStore<RootState, RootActions, StoreDispatcher, void>(
+            rootReducer,
+            initialState,
+            composeEnhancers(
+                applyMiddleware(...[thunkMiddleware.withExtraArgument(api)]),
+                ...enhancers,
+            ),
+        )
     }
-
-    return createStore(
-        rootReducer,
-        composeEnhancers(
-            applyMiddleware(...middleware),
-            ...enhancers,
-        ),
-    )
 }

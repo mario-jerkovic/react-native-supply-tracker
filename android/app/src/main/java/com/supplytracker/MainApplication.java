@@ -3,7 +3,6 @@ package com.supplytracker;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.rnfs.RNFSPackage;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
@@ -27,7 +26,6 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNFSPackage(),
                     new RNGoogleSigninPackage()
             );
         }
