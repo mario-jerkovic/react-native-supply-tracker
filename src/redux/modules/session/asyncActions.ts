@@ -31,6 +31,8 @@ export function googleSignIn(silently: boolean) {
             if (!accessToken) {
                 dispatch(actions.setLoading(false))
             } else {
+                api.storage.accessToken = accessToken
+
                 dispatch(actions.signIn.success(accessToken))
                 dispatch(getGoogleUser())
             }

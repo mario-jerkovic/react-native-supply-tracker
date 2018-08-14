@@ -2,7 +2,7 @@ import { GoogleSignin } from 'react-native-google-signin'
 
 import { AuthenticationApi } from './type'
 
-export default class GoogleAuthentication implements AuthenticationApi {
+export default class Google implements AuthenticationApi {
     private static readonly defaultScopes = [
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/drive.file',
@@ -13,7 +13,7 @@ export default class GoogleAuthentication implements AuthenticationApi {
 
     constructor() {
         GoogleSignin.configure({
-            scopes: GoogleAuthentication.defaultScopes,
+            scopes: Google.defaultScopes,
             offlineAccess: false,
             forceConsentPrompt: true,
         })
