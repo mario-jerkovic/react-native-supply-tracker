@@ -9,10 +9,12 @@ import Root from './screens'
 
 const store = createStore(Api.build())({} as StoreState)
 
-export default function Application() {
+const Application: React.SFC<{}> = () => {
     return (
         <StoreProvider store={store} >
             <Root screenProps={{ test: 'test' }} />
         </StoreProvider >
     )
 }
+
+export default Application

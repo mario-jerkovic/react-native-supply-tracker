@@ -1,3 +1,3 @@
-import SignInScreen from './containers/SignIn'
+import SignInContainer from './containers/SignIn'
 
-export default SignInScreen
+export default SignInContainer

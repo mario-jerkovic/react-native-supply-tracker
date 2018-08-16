@@ -1,8 +1,10 @@
 import * as React from 'react'
+import { NavigationScreenProp } from 'react-navigation'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getUser } from 'src/redux/modules'
+import { getAppLoading, getUser } from 'src/redux/modules'
 
+import { loadProducts } from 'src/redux/modules/inventory/asyncActions'
 import { loadGoogleSession } from 'src/redux/modules/session/asyncActions'
 import { StoreDispatcher, StoreState } from 'src/redux/types'
 
@@ -13,19 +15,20 @@ import IntroUserControlComponent from '../components/IntroUserControl'
 import SignInViewComponent from '../components/SignInView'
 
 type Props = {
-    loading: boolean,
+    loading: ReturnType<typeof getAppLoading>,
     user?: ReturnType<typeof getUser>,
-    loadGoogleSession(silently: boolean): void,
+    loadGoogleSession: typeof loadGoogleSession,
+    loadProducts: typeof loadProducts,
+    navigation: NavigationScreenProp<any, any>,
 }
 
 class SignInContainer extends React.Component<Props> {
     public componentDidMount() {
-        this.props.loadGoogleSession(true)
-        // this.props.navigation.navigate('App')
+        this.loadSession(true)
     }
 
     public onGoogleSignInPress = () => {
-        this.props.loadGoogleSession(false)
+        this.loadSession(false)
     }
 
     public render() {
@@ -55,16 +58,24 @@ class SignInContainer extends React.Component<Props> {
             </SignInViewComponent >
         )
     }
+
+    private loadSession = (silently: boolean) => {
+        this.props.loadGoogleSession(silently, async () => {
+            await this.props.loadProducts()
+            this.props.navigation.navigate('App')
+        })
+    }
 }
 
 export default connect(
     (state: StoreState) => ({
-        loading: state.session.loading,
+        loading: getAppLoading(state),
         user: getUser(state),
     }),
     (dispatch: StoreDispatcher) => (
         bindActionCreators({
             loadGoogleSession,
+            loadProducts,
         }, dispatch)
     ),
 )(SignInContainer)

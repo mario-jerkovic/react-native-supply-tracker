@@ -5,46 +5,41 @@ import { Actions, State } from './types'
 
 const initialState: State = {
     loading: false,
-    user: null,
-    accessToken: undefined,
+    products: [],
 }
 
 export default (state: State = initialState, action: Actions) => {
     switch (action.type) {
-        case getType(actions.loadSession.request):
+        case getType(actions.loadProducts.request):
             return {
                 ...state,
                 loading: true,
             }
-        case getType(actions.loadSession.success):
+        case getType(actions.loadProducts.success):
             return {
                 ...state,
                 loading: false,
-                user: action.payload.user,
-                accessToken: action.payload.accessToken,
+                products: action.payload,
             }
-        case getType(actions.loadSession.failure):
+        case getType(actions.loadProducts.failure):
             return {
                 ...state,
                 loading: false,
-                user: null,
-                accessToken: undefined,
             }
         default:
             return state
     }
 }
 
-export function getUser(state: State) {
-    if (!state.user) {
-        return null
-    }
-
-    return {
-        email: state.user.email,
-        fullName: `${state.user.firstName} ${state.user.lastName}`,
-        profileImage: state.user.photo,
-    }
+export function getLatestProductsSupply(state: State) {
+    return state.products.map((product) => ({
+        id: product.id,
+        name: product.name,
+        image: product.photo,
+        supply: product.supplies.sort((a, b) => (
+            new Date(a.createdTime).getTime() - new Date(b.createdTime).getTime()
+        ))[0],
+    }))
 }
 
 export function getLoading(state: State) {

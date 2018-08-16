@@ -1,4 +1,4 @@
-import { Product } from 'src/redux/modules/supply/types'
+import { Product } from 'src/redux/modules/inventory/types'
 
 import { StorageApi } from './type'
 
@@ -26,42 +26,42 @@ export default class GoogleDrive implements StorageApi {
         this._accessToken = value
     }
 
-    public async getData(): Promise<Product[] | null> {
-        const options = this.configureGET()
-        const fileId = await this.getMetaData()
-
-        if (!fileId) {
-            return null
-        }
-
+    public async getData(): Promise<Product[]> {
         try {
+            const options = this.configureGET()
+            const fileId = await this.getMetaData()
+
+            if (!fileId) {
+                return []
+            }
+
             return await fetch(`${GoogleDrive.apiUrl}/files/${fileId}?alt=media`, options)
                 .then((res) => res.json())
         } catch (error) {
-            return null
+            throw new Error('@TODO: getData failed')
         }
     }
 
     public async setData(data: Product[]): Promise<void> {
-        const fileId = await this.getMetaData()
-        const isUpdate = !!fileId
-
-        const body = this.configureBody(data, isUpdate)
-        const options = this.configurePOST(body.length.toString(), isUpdate)
-
         try {
+            const fileId = await this.getMetaData()
+            const isUpdate = !!fileId
+
+            const body = this.configureBody(data, isUpdate)
+            const options = this.configurePOST(body.length.toString(), isUpdate)
+
             await fetch(`${GoogleDrive.uploadApiUrl}/files${isUpdate ? `/${fileId}` : ''}?uploadType=multipart`, {
                 ...options,
                 body,
             })
         } catch (error) {
-            throw error
+            throw new Error('@TODO: setData failed')
         }
     }
 
     private configureGET() {
         if (!this._accessToken) {
-            throw new Error('No access token provided')
+            throw new Error('@TODO: configureGET failed')
         }
 
         return {
@@ -72,7 +72,7 @@ export default class GoogleDrive implements StorageApi {
 
     private configurePOST(length: string, isUpdate: boolean) {
         if (!this._accessToken) {
-            throw new Error('No access token provided')
+            throw new Error('@TODO: configurePOST failed')
         }
 
         return {

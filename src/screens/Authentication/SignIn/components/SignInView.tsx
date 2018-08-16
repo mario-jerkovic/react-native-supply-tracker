@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function SignInViewComponent(props: Props) {
+const SignInViewComponent: React.SFC<Props> = (props) => {
     const {
         children,
     } = props
@@ -35,3 +35,5 @@ export default function SignInViewComponent(props: Props) {
         </ScrollView >
     )
 }
+
+export default SignInViewComponent

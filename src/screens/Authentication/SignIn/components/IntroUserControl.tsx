@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function IntroUserControlComponent(props: Props) {
+const IntroUserControlComponent: React.SFC<Props> = (props) => {
     const {
         email,
         fullName,
@@ -67,3 +67,5 @@ export default function IntroUserControlComponent(props: Props) {
         </View >
     )
 }
+
+export default IntroUserControlComponent

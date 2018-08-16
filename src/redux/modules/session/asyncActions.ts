@@ -3,25 +3,7 @@ import { StoreDispatcher, StoreState } from 'src/redux/types'
 
 import * as actions from './actions'
 
-export function loadGoogleUser() {
-    return async (dispatch: StoreDispatcher, getState: () => StoreState, api: Api) => {
-        dispatch(actions.loadUser.request())
-
-        try {
-            const user = await api.authentication.getCurrentUser()
-
-            if (!user) {
-                dispatch(actions.setLoading(false))
-            } else {
-                dispatch(actions.loadUser.success(user))
-            }
-        } catch (error) {
-            dispatch(actions.loadUser.failure(Error('Error: loadUser @TODO')))
-        }
-    }
-}
-
-export function loadGoogleSession(silently: boolean) {
+export function loadGoogleSession(silently: boolean, successCb?: () => void) {
     return async (dispatch: StoreDispatcher, getState: () => StoreState, api: Api) => {
         dispatch(actions.loadSession.request())
 
@@ -29,12 +11,16 @@ export function loadGoogleSession(silently: boolean) {
             const accessToken = await api.authentication.signIn(silently)
 
             if (!accessToken) {
-                dispatch(actions.setLoading(false))
+                dispatch(actions.loadSession.failure(Error('Error: no accessToken @TODO')))
             } else {
+                const user = await api.authentication.getCurrentUser()
                 // api.storage.accessToken = accessToken
 
-                dispatch(actions.loadSession.success(accessToken))
-                dispatch(loadGoogleUser())
+                dispatch(actions.loadSession.success({ accessToken, user }))
+
+                if (successCb) {
+                    successCb()
+                }
             }
         } catch (error) {
             dispatch(actions.loadSession.failure(Error('Error: loadSession @TODO')))

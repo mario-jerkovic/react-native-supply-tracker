@@ -4,8 +4,7 @@ import { ViewProps } from 'react-native'
 export interface IGoogleSigninButtonProps extends ViewProps {
     size?: GoogleSigninButton.Size,
     color?: GoogleSigninButton.Color,
-
-    onPress?(): void
+    onPress?: () => void
 }
 
 export class GoogleSigninButton extends React.Component<IGoogleSigninButtonProps> {

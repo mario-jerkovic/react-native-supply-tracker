@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function IntroLogoComponent() {
+const IntroLogoComponent: React.SFC<{}> = () => {
     return (
         <View style={styles.container} >
             <Image
@@ -47,3 +47,5 @@ export default function IntroLogoComponent() {
         </View >
     )
 }
+
+export default IntroLogoComponent

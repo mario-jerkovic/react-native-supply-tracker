@@ -19,8 +19,10 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function IntroLoadingComponent(props: Props) {
-    const { animating } = props
+const IntroLoadingComponent: React.SFC<Props> = (props) => {
+    const {
+        animating,
+    } = props
 
     return (
         <View style={styles.container} >
@@ -33,3 +35,5 @@ export default function IntroLoadingComponent(props: Props) {
         </View >
     )
 }
+
+export default IntroLoadingComponent

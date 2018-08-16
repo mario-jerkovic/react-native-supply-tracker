@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { GoogleSigninButton } from 'react-native-google-signin'
 
 type Props = {
-    onPress(): any,
+    onPress: () => any,
 }
 
 const styles = StyleSheet.create({
@@ -19,8 +19,10 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function IntroSignInControlComponent(props: Props) {
-    const { onPress } = props
+const IntroSignInControlComponent: React.SFC<Props> = (props) => {
+    const {
+        onPress,
+    } = props
 
     return (
         <View style={styles.container} >
@@ -33,3 +35,5 @@ export default function IntroSignInControlComponent(props: Props) {
         </View >
     )
 }
+
+export default IntroSignInControlComponent
