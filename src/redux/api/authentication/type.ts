@@ -1,4 +1,4 @@
-import { User } from '../../modules/session/models'
+import { User } from 'src/redux/modules/session/types'
 
 export abstract class AuthenticationApi {
     public abstract async signIn(silently: boolean): Promise<string | null>

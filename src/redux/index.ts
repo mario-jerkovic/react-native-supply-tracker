@@ -2,18 +2,19 @@ import {
     applyMiddleware,
     compose,
     createStore,
-    Dispatch as BaseDispatch,
-    Store as BaseStore,
 } from 'redux'
-import { StateType } from 'typesafe-actions'
-import thunkMiddleware, { ThunkDispatch } from 'redux-thunk'
+import thunkMiddleware from 'redux-thunk'
 
+import {
+    Store,
+    StoreDispatcher,
+    StoreState,
+} from 'src/redux/types'
 import Api from './api'
-import rootReducer, { RootActions, RootState } from './modules'
-
-export type Store = BaseStore<StoreState, RootActions>;
-export type StoreState = StateType<typeof rootReducer>;
-export type StoreDispatcher = BaseDispatch<RootActions> & ThunkDispatch<StoreState, Api, RootActions>;
+import rootReducer, {
+    RootActions,
+    RootState,
+} from './modules'
 
 export default function configureStore(api: Api) {
     return (initialState: StoreState): Store => {

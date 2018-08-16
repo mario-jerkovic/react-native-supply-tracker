@@ -1,12 +1,9 @@
 import * as React from 'react'
-import {
-    View,
-    StyleSheet,
-} from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { GoogleSigninButton } from 'react-native-google-signin'
 
 type Props = {
-    onPress: () => any
+    onPress(): any,
 }
 
 const styles = StyleSheet.create({
@@ -17,7 +14,7 @@ const styles = StyleSheet.create({
         paddingTop: 32,
     },
     button: {
-        width: 312,
+        width: 300,
         height: 48,
     },
 })

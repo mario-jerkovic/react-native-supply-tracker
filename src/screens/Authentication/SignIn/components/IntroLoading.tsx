@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {
-    View,
-    StyleSheet,
     ProgressBarAndroid,
+    StyleSheet,
+    View,
 } from 'react-native'
 
 type Props = {
-    animating: boolean
+    animating: boolean,
 }
 
 const styles = StyleSheet.create({

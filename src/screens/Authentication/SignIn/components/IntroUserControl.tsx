@@ -1,15 +1,15 @@
 import * as React from 'react'
 import {
-    View,
-    Text,
     Image,
     StyleSheet,
+    Text,
+    View,
 } from 'react-native'
 
 type Props = {
     email: string,
     fullName: string,
-    profileImage?: string
+    profileImage?: string,
 }
 
 const styles = StyleSheet.create({

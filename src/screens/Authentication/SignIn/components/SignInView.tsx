@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {
-    View,
-    StyleSheet,
     ScrollView,
+    StyleSheet,
+    View,
 } from 'react-native'
 
 type Props = {
-    children?: React.ReactNode
+    children?: React.ReactNode,
 }
 
 const styles = StyleSheet.create({

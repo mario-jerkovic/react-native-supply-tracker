@@ -1,11 +1,11 @@
-import { StoreDispatcher, StoreState } from '../..'
-import Api from '../../api'
+import Api from 'src/redux/api'
+import { StoreDispatcher, StoreState } from 'src/redux/types'
 
 import * as actions from './actions'
 
-export function getGoogleUser() {
+export function loadGoogleUser() {
     return async (dispatch: StoreDispatcher, getState: () => StoreState, api: Api) => {
-        dispatch(actions.getUser.request())
+        dispatch(actions.loadUser.request())
 
         try {
             const user = await api.authentication.getCurrentUser()
@@ -13,17 +13,17 @@ export function getGoogleUser() {
             if (!user) {
                 dispatch(actions.setLoading(false))
             } else {
-                dispatch(actions.getUser.success(user))
+                dispatch(actions.loadUser.success(user))
             }
         } catch (error) {
-            dispatch(actions.getUser.failure(Error('Error: getGoogleUser @TODO')))
+            dispatch(actions.loadUser.failure(Error('Error: loadUser @TODO')))
         }
     }
 }
 
-export function googleSignIn(silently: boolean) {
+export function loadGoogleSession(silently: boolean) {
     return async (dispatch: StoreDispatcher, getState: () => StoreState, api: Api) => {
-        dispatch(actions.signIn.request())
+        dispatch(actions.loadSession.request())
 
         try {
             const accessToken = await api.authentication.signIn(silently)
@@ -31,13 +31,13 @@ export function googleSignIn(silently: boolean) {
             if (!accessToken) {
                 dispatch(actions.setLoading(false))
             } else {
-                api.storage.accessToken = accessToken
+                // api.storage.accessToken = accessToken
 
-                dispatch(actions.signIn.success(accessToken))
-                dispatch(getGoogleUser())
+                dispatch(actions.loadSession.success(accessToken))
+                dispatch(loadGoogleUser())
             }
         } catch (error) {
-            dispatch(actions.getUser.failure(Error('Error: googleSignIn @TODO')))
+            dispatch(actions.loadSession.failure(Error('Error: loadSession @TODO')))
         }
     }
 }

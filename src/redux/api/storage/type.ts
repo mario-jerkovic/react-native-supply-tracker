@@ -1,4 +1,4 @@
-import { Product } from '../../modules/supply/models'
+import { Product } from 'src/redux/modules/supply/types'
 
 export abstract class StorageApi {
 

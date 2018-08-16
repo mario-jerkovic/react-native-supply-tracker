@@ -19,7 +19,7 @@ export default class Google implements AuthenticationApi {
         })
     }
 
-    async signIn(silently: boolean) {
+    public async signIn(silently: boolean) {
         try {
             await GoogleSignin.hasPlayServices()
 
@@ -33,21 +33,16 @@ export default class Google implements AuthenticationApi {
 
             return userInfo.accessToken
         } catch (error) {
-            console.log('Error: signIn @TODO', error, error.code)
             return null
         }
     }
 
-    async signOut() {
-        try {
-            await GoogleSignin.revokeAccess()
-            await GoogleSignin.signOut()
-        } catch (error) {
-            console.log('Error: signOut @TODO', error)
-        }
+    public async signOut() {
+        await GoogleSignin.revokeAccess()
+        await GoogleSignin.signOut()
     }
 
-    async getCurrentUser() {
+    public async getCurrentUser() {
         try {
             const userInfo = await GoogleSignin.signInSilently()
 
@@ -63,7 +58,6 @@ export default class Google implements AuthenticationApi {
                 photo: userInfo.user.photo,
             }
         } catch (error) {
-            console.log('Error: getCurrentUser @TODO', error)
             return null
         }
     }

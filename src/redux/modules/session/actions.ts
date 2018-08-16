@@ -1,19 +1,19 @@
 import { createAction, createAsyncAction } from 'typesafe-actions'
 
-import { User } from './models'
+import { User } from './types'
 
-export const getUser = createAsyncAction(
-    '@session/GET_USER_REQUEST',
-    '@session/GET_USER_SUCCESS',
-    '@session/GET_USER_FAILURE',
+export const loadUser = createAsyncAction(
+    '@session/USER_REQUEST',
+    '@session/USER_SUCCESS',
+    '@session/USER_FAILURE',
 )<void, User, Error>()
 
-export const signIn = createAsyncAction(
-    '@session/SIGN_IN_REQUEST',
-    '@session/SIGN_IN_SUCCESS',
-    '@session/SIGN_IN_FAILURE',
+export const loadSession = createAsyncAction(
+    '@session/SESSION_REQUEST',
+    '@session/SESSION_SUCCESS',
+    '@session/SESSION_FAILURE',
 )<void, string, Error>()
 
-export const setLoading = createAction('@session/SET_LOADING', resolve => (
+export const setLoading = createAction('@session/LOADING_SET', (resolve) => (
     (loading: boolean) => resolve({ loading })
 ))

@@ -1,39 +1,34 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { getUser } from 'src/redux/modules'
 
-import {
-    StoreDispatcher,
-    StoreState,
-} from '../../../../redux'
-import { googleSignIn } from '../../../../redux/modules/session/asyncActions'
+import { loadGoogleSession } from 'src/redux/modules/session/asyncActions'
+import { StoreDispatcher, StoreState } from 'src/redux/types'
 
-import SignInViewComponent from '../components/SignInView'
-import IntroLogoComponent from '../components/IntroLogo'
 import IntroLoadingComponent from '../components/IntroLoading'
-import IntroUserControlComponent from '../components/IntroUserControl'
+import IntroLogoComponent from '../components/IntroLogo'
 import IntroSignInControlComponent from '../components/IntroSignInControl'
+import IntroUserControlComponent from '../components/IntroUserControl'
+import SignInViewComponent from '../components/SignInView'
 
 type Props = {
     loading: boolean,
-    user?: {
-        email: string,
-        fullName: string,
-        profileImage: string,
-    },
-    googleSignIn(silently: boolean): void,
+    user?: ReturnType<typeof getUser>,
+    loadGoogleSession(silently: boolean): void,
 }
 
 class SignInContainer extends React.Component<Props> {
-    componentDidMount() {
-        this.props.googleSignIn(true)
+    public componentDidMount() {
+        this.props.loadGoogleSession(true)
+        // this.props.navigation.navigate('App')
     }
 
-    onGoogleSignInPress = () => {
-        this.props.googleSignIn(false)
+    public onGoogleSignInPress = () => {
+        this.props.loadGoogleSession(false)
     }
 
-    render() {
+    public render() {
         const {
             loading,
             user,
@@ -63,17 +58,13 @@ class SignInContainer extends React.Component<Props> {
 }
 
 export default connect(
-    ({ session }: StoreState) => ({
-        loading: session.loading,
-        user: session.user ? {
-            email: session.user.email,
-            fullName: `${session.user.firstName} ${session.user.lastName}`,
-            profileImage: session.user.photo,
-        } : undefined,
+    (state: StoreState) => ({
+        loading: state.session.loading,
+        user: getUser(state),
     }),
     (dispatch: StoreDispatcher) => (
         bindActionCreators({
-            googleSignIn,
+            loadGoogleSession,
         }, dispatch)
     ),
 )(SignInContainer)

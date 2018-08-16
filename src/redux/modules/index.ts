@@ -1,25 +1,22 @@
 import { combineReducers } from 'redux'
 
-import sessionReducer, {
+import sessionReducer, * as fromSession from './session'
+import {
     Actions as SessionActions,
     State as SessionState,
-} from './session'
-
-import supplyReducer, {
-    Actions as SupplyActions,
-    State as SupplyState,
-} from './supply'
+} from './session/types'
 
 export type RootState = {
     session: SessionState,
-    supply: SupplyState,
 }
 
 export type RootActions =
     | SessionActions
-    | SupplyActions
 
 export default combineReducers<RootState, RootActions>({
     session: sessionReducer,
-    supply: supplyReducer,
 })
+
+export const getUser = (state: RootState) => {
+    return fromSession.getUser(state.session)
+}

@@ -1,87 +1,87 @@
 import * as React from 'react'
 import { ViewProps } from 'react-native'
 
-export interface GoogleSigninButtonProps extends ViewProps {
-    size?: GoogleSigninButton.Size;
-    color?: GoogleSigninButton.Color;
+export interface IGoogleSigninButtonProps extends ViewProps {
+    size?: GoogleSigninButton.Size,
+    color?: GoogleSigninButton.Color,
 
-    onPress?(): void;
+    onPress?(): void
 }
 
-export class GoogleSigninButton extends React.Component<GoogleSigninButtonProps> {
-    constructor(props: GoogleSigninButtonProps);
+export class GoogleSigninButton extends React.Component<IGoogleSigninButtonProps> {
+    constructor(props: IGoogleSigninButtonProps);
 }
 
 export namespace GoogleSigninButton {
     enum Size {
         Standard,
         Wide,
-        Icon
+        Icon,
     }
 
     enum Color {
         Light,
-        Dark
+        Dark,
     }
 }
 
-export interface HasPlayServicesParams {
+export interface IHasPlayServicesParams {
     /**
      * When showPlayServicesUpdateDialog is true, the user will be prompted to install Play
      * Services if on Android and they are not installed.
      */
-    showPlayServicesUpdateDialog?: boolean;
+    showPlayServicesUpdateDialog?: boolean
 }
 
-export interface ConfigureParams {
+export interface IConfigureParams {
     /**
      * The Google API scopes to request access to. Default is email and profile.
      */
-    scopes?: string[];
+    scopes?: string[]
 
     /**
      * iOS client ID from Developer Console. Required for iOS.
      */
-    iosClientId?: string;
+    iosClientId?: string
 
     /**
      * Web client ID from Developer Console. Required for offline access
      */
-    webClientId?: string;
+    webClientId?: string
 
     /**
      * Must be true if you wish to access user APIs on behalf of the user from
      * your own server
      */
-    offlineAccess?: boolean;
+    offlineAccess?: boolean
 
     /**
      * Specifies a hosted domain restriction
      */
-    hostedDomain?: string;
+    hostedDomain?: string
 
     /**
      * ANDROID ONLY. Specifies if the consent prompt should be shown at each login.
      */
-    forceConsentPrompt?: boolean;
+    forceConsentPrompt?: boolean
 
     /**
      * ANDROID ONLY. An account name that should be prioritized.
      */
-    accountName?: string;
+    accountName?: string
 }
 
-export interface User {
-    idToken: string | null;
+export interface IUser {
+    idToken: string | null
     /**
      * Not null only if a valid webClientId and offlineAccess: true was
      * specified in configure().
      */
-    serverAuthCode: string | null;
+    serverAuthCode: string | null
     /**
      * IOS ONLY. Use getAccessToken() on Android
      */
-    accessToken: string;
+    accessToken: string
     user: {
         id: string | null;
         name: string | null;
@@ -97,32 +97,32 @@ export namespace GoogleSignin {
     /**
      * Check if the device has Google Play Services installed
      */
-    function hasPlayServices(params?: HasPlayServicesParams): Promise<boolean>;
+    function hasPlayServices(params?: IHasPlayServicesParams): Promise<boolean>
 
     /**
      * Configures the library for login. MUST be called before attempting login
      */
-    function configure(params?: ConfigureParams): void;
+    function configure(params?: IConfigureParams): void
 
     /**
      * Returns a Promise that resolves with the current signed in user, or null
      * if not signed in.
      */
-    function signInSilently(): Promise<User | null>;
+    function signInSilently(): Promise<IUser | null>
 
     /**
      * Prompts the user to sign in with their Google account. Resolves with the
      * user if successful.
      */
-    function signIn(): Promise<User>;
+    function signIn(): Promise<IUser>
 
     /**
      * Signs the user out.
      */
-    function signOut(): Promise<void>;
+    function signOut(): Promise<void>
 
     /**
      * Removes your application from the user's authorized applications
      */
-    function revokeAccess(): Promise<void>;
+    function revokeAccess(): Promise<void>
 }

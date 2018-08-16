@@ -1,20 +1,11 @@
-import { ActionType, getType } from 'typesafe-actions'
-
-import { User } from './models'
+import { getType } from 'typesafe-actions'
 
 import * as actions from './actions'
-
-export type Actions = ActionType<typeof actions>;
-
-export type State = {
-    loading: boolean,
-    user?: User,
-    accessToken?: string
-}
+import { Actions, State } from './types'
 
 const initialState: State = {
     loading: false,
-    user: undefined,
+    user: null,
     accessToken: undefined,
 }
 
@@ -25,19 +16,19 @@ export default (state: State = initialState, action: Actions) => {
                 ...state,
                 loading: action.payload.loading,
             }
-        case getType(actions.signIn.request):
-        case getType(actions.getUser.request):
+        case getType(actions.loadUser.request):
+        case getType(actions.loadSession.request):
             return {
                 ...state,
                 loading: true,
             }
-        case getType(actions.getUser.success):
+        case getType(actions.loadUser.success):
             return {
                 ...state,
                 loading: false,
                 user: action.payload,
             }
-        case getType(actions.signIn.success):
+        case getType(actions.loadSession.success):
             return {
                 ...state,
                 loading: false,
@@ -45,5 +36,17 @@ export default (state: State = initialState, action: Actions) => {
             }
         default:
             return state
+    }
+}
+
+export const getUser = (state: State) => {
+    if (!state.user) {
+        return null
+    }
+
+    return {
+        email: state.user.email,
+        fullName: `${state.user.firstName} ${state.user.lastName}`,
+        profileImage: state.user.photo,
     }
 }

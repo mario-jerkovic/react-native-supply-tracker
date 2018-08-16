@@ -1,0 +1,43 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-standard",
+    "tslint-react"
+  ],
+  "rules": {
+    "object-literal-sort-keys": false,
+    "jsx-boolean-values": false,
+    "space-before-function-paren": false,
+    "interface-over-type-literal": false,
+    "jsx-no-multiline-js": false,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    "ter-indent": [
+      true,
+      4,
+      {
+        "SwitchCase": true
+      }
+    ],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
+    "no-namespace": [
+      true,
+      "allow-declarations"
+    ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**/*.ts"
+    ]
+  }
+}

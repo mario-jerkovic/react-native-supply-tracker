@@ -1,17 +1,18 @@
 import * as React from 'react'
-import { Provider } from 'react-redux'
+import { Provider as StoreProvider } from 'react-redux'
 
-import createStore, { StoreState } from './redux'
+import { StoreState } from 'src/redux/types'
+import createStore from './redux'
 
-import Root from './screens'
 import Api from './redux/api'
+import Root from './screens'
 
 const store = createStore(Api.build())({} as StoreState)
 
 export default function Application() {
     return (
-        <Provider store={store} >
-            <Root />
-        </Provider >
+        <StoreProvider store={store} >
+            <Root screenProps={{ test: 'test' }} />
+        </StoreProvider >
     )
 }

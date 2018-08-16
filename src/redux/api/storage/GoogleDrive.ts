@@ -1,4 +1,5 @@
-import { Product } from '../../modules/supply/models'
+import { Product } from 'src/redux/modules/supply/types'
+
 import { StorageApi } from './type'
 
 type File = {
@@ -23,6 +24,39 @@ export default class GoogleDrive implements StorageApi {
 
     set accessToken(value: string) {
         this._accessToken = value
+    }
+
+    public async getData(): Promise<Product[] | null> {
+        const options = this.configureGET()
+        const fileId = await this.getMetaData()
+
+        if (!fileId) {
+            return null
+        }
+
+        try {
+            return await fetch(`${GoogleDrive.apiUrl}/files/${fileId}?alt=media`, options)
+                .then((res) => res.json())
+        } catch (error) {
+            return null
+        }
+    }
+
+    public async setData(data: Product[]): Promise<void> {
+        const fileId = await this.getMetaData()
+        const isUpdate = !!fileId
+
+        const body = this.configureBody(data, isUpdate)
+        const options = this.configurePOST(body.length.toString(), isUpdate)
+
+        try {
+            await fetch(`${GoogleDrive.uploadApiUrl}/files${isUpdate ? `/${fileId}` : ''}?uploadType=multipart`, {
+                ...options,
+                body,
+            })
+        } catch (error) {
+            throw error
+        }
     }
 
     private configureGET() {
@@ -51,7 +85,7 @@ export default class GoogleDrive implements StorageApi {
         }
     }
 
-    private configureBody(data: Object, isUpdate: boolean) {
+    private configureBody(data: object, isUpdate: boolean) {
         const metaData: BodyMeta = {
             name: GoogleDrive.fileName,
             mimeType: 'application/json',
@@ -74,49 +108,15 @@ export default class GoogleDrive implements StorageApi {
         const fParams = encodeURIComponent('files( id, name, createdTime )')
         const qParams = encodeURIComponent(`name = "${GoogleDrive.fileName}" and "appDataFolder" in parents`)
 
+        // tslint:disable-next-line:max-line-length
         const file: File = await fetch(`${GoogleDrive.apiUrl}/files?q=${qParams}&spaces=appDataFolder&fields=${fParams}`, options)
-            .then(res => res.json())
-            .then(res => res.files[0])
+            .then((res) => res.json())
+            .then((res) => res.files[0])
 
         if (!file) {
             return null
         }
 
         return file.id
-    }
-
-    async getData(): Promise<Product[] | null> {
-        const options = this.configureGET()
-        const fileId = await this.getMetaData()
-
-        if (!fileId) {
-            return null
-        }
-
-        try {
-            return await fetch(`${GoogleDrive.apiUrl}/files/${fileId}?alt=media`, options)
-                .then(res => res.json())
-        } catch (error) {
-            console.log('Error: getData @TODO', error)
-            return null
-        }
-    }
-
-    async setData(data: Product[]): Promise<void> {
-        const fileId = await this.getMetaData()
-        const isUpdate = !!fileId
-
-        const body = this.configureBody(data, isUpdate)
-        const options = this.configurePOST(body.length.toString(), isUpdate)
-
-        try {
-            await fetch(`${GoogleDrive.uploadApiUrl}/files${isUpdate ? `/${fileId}` : ''}?uploadType=multipart`, {
-                ...options,
-                body,
-            })
-        } catch (error) {
-            console.log('Error: setData @TODO', error)
-            throw error
-        }
     }
 }
