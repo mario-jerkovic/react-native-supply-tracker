@@ -1,54 +1,47 @@
 import * as React from 'react'
+import Avatar from 'src/components/Avatar/Avatar'
 
-import Button from 'src/components/Button'
-import {
-    Card,
-    CardActions,
-    CardContent,
-    CardMedia,
-} from 'src/components/Card'
+import Divider from 'src/components/Divider/Divider'
+import ListItem from 'src/components/ListItem/ListItem'
+import ListItemText from 'src/components/ListItem/ListItemText'
 
 type Props = {
     name: string,
-    image: string,
     quantity: number,
 }
 
 const ProductListItemComponent: React.SFC<Props> = (props) => {
     const {
         name,
-        image,
         quantity,
     } = props
 
-    const handleShareClick = () => {
+    const handleListItemPress = () => {
         // tslint:disable-next-line:no-console
-        console.log('Share click')
+        console.log('List item press')
     }
 
-    const handleLearMore = () => {
+    const handleListItemLongPress = () => {
         // tslint:disable-next-line:no-console
-        console.log('Learn more click')
+        console.log('List item long press')
     }
 
     return (
-        <Card >
-            <CardMedia
-                image={image}
-            />
-            <CardContent
-                title={name}
-                supportingText={`Available quantity: ${quantity} kg`}
-            />
-            <CardActions >
-                <Button onPress={handleShareClick} >
-                    Share
-                </Button >
-                <Button onPress={handleLearMore} >
-                    Learn more
-                </Button >
-            </CardActions >
-        </Card >
+        <React.Fragment >
+            <ListItem
+                onPress={handleListItemPress}
+                onLongPress={handleListItemLongPress}
+            >
+                <Avatar >
+                    {name.charAt(0).toUpperCase()}
+                </Avatar >
+                <ListItemText
+                    primary={name}
+                    secondary={`Available quantity: ${quantity} kg`}
+                />
+            </ListItem >
+            <Divider inset={true} />
+        </React.Fragment >
     )
 }
 

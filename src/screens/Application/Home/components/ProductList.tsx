@@ -1,23 +1,10 @@
 import * as React from 'react'
-import {
-    ScrollView,
-    StyleSheet,
-    View,
-} from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-type Props = {
-    children: React.ReactNode,
-}
+type Props = {}
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-        flexGrow: 1,
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+    root: {},
 })
 
 const ProductListComponent: React.SFC<Props> = (props) => {
@@ -26,11 +13,9 @@ const ProductListComponent: React.SFC<Props> = (props) => {
     } = props
 
     return (
-        <ScrollView >
-            <View style={styles.root} >
-                {children}
-            </View >
-        </ScrollView >
+        <View style={styles.root} >
+            {children}
+        </View >
     )
 }
 

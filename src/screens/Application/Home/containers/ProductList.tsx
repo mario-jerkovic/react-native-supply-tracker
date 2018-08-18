@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { FlatList, ListRenderItemInfo } from 'react-native'
 import { connect } from 'react-redux'
 
 import { getLatestProductsSupply } from 'src/redux/modules'
@@ -19,17 +20,25 @@ class ProductListContainer extends React.Component<Props> {
 
         return (
             <ProductListComponent >
-                {products.map((product) => (
-                    <ProductListItemComponent
-                        key={product.id}
-                        name={product.name}
-                        image={product.image}
-                        quantity={product.supply.amount}
-                    />
-                ))}
+                <FlatList
+                    data={products}
+                    keyExtractor={this.keyExtractor}
+                    renderItem={this.renderItem}
+                />
             </ProductListComponent >
         )
     }
+
+    private keyExtractor = (item: Props['products'][0]) => {
+        return item.id
+    }
+
+    private renderItem = (info: ListRenderItemInfo<Props['products'][0]>) => (
+        <ProductListItemComponent
+            name={info.item.name}
+            quantity={info.item.supply.amount}
+        />
+    )
 }
 
 export default connect(
