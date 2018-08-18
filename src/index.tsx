@@ -7,7 +7,7 @@ import createStore from './redux'
 import Api from './redux/api'
 import Root from './screens'
 
-const store = createStore(Api.build())({} as StoreState)
+const store = createStore(Api.build(true))({} as StoreState)
 
 const Application: React.SFC<{}> = () => {
     return (
