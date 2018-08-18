@@ -3,8 +3,12 @@ import {
     StyleSheet,
     View,
 } from 'react-native'
+import TouchableRipple from 'src/components/Touchable/TouchableRipple'
 
-type Props = {}
+type Props = {
+    onPress?: () => void,
+    onLongPress?: () => void,
+}
 
 const styles = StyleSheet.create({
     root: {
@@ -18,13 +22,30 @@ const styles = StyleSheet.create({
 })
 
 const ListItem: React.SFC<Props> = (props) => {
-    const { children } = props
+    const {
+        onPress,
+        onLongPress,
+        children,
+    } = props
 
-    return (
+    const component = (
         <View style={styles.root} >
             {children}
         </View >
     )
+
+    if (onPress) {
+        return (
+            <TouchableRipple
+                onPress={onPress}
+                onLongPress={onLongPress}
+            >
+                {component}
+            </TouchableRipple >
+        )
+    }
+
+    return component
 }
 
 export default ListItem

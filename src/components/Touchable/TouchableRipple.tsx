@@ -13,7 +13,8 @@ const supported = Platform.OS === 'android' && Platform.Version >= ANDROID_VERSI
 
 type Props = {
     disabled?: boolean,
-    onPress: () => any,
+    onPress: () => void,
+    onLongPress?: () => void
     rippleColor?: string,
     children: React.ReactNode,
     style?: ViewStyle,
