@@ -42,6 +42,12 @@ export function getLatestProductsSupply(state: State) {
     }))
 }
 
+export function getProductById(productId: string, state: State) {
+    return state.products.find((product) => (
+        product.id === productId
+    ))
+}
+
 export function getLoading(state: State) {
     return state.loading
 }

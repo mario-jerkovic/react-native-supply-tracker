@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { FlatList, ListRenderItemInfo } from 'react-native'
+import { NavigationScreenProp } from 'react-navigation'
 import { connect } from 'react-redux'
 
 import { getLatestProductsSupply } from 'src/redux/modules'
@@ -10,6 +11,7 @@ import ProductListItemComponent from '../components/ProductListItem'
 
 type Props = {
     products: ReturnType<typeof getLatestProductsSupply>,
+    navigation: NavigationScreenProp<any, any>
 }
 
 class ProductListContainer extends React.Component<Props> {
@@ -37,8 +39,15 @@ class ProductListContainer extends React.Component<Props> {
         <ProductListItemComponent
             name={info.item.name}
             quantity={info.item.supply.amount}
+            onPress={this.handleListItemPress(info.item.id)}
         />
     )
+
+    private handleListItemPress = (productId: string) => () => {
+        this.props.navigation.navigate('Product', {
+            productId,
+        })
+    }
 }
 
 export default connect(

@@ -8,30 +8,19 @@ import ListItemText from 'src/components/ListItem/ListItemText'
 type Props = {
     name: string,
     quantity: number,
+    onPress: () => void,
 }
 
 const ProductListItemComponent: React.SFC<Props> = (props) => {
     const {
         name,
         quantity,
+        onPress,
     } = props
-
-    const handleListItemPress = () => {
-        // tslint:disable-next-line:no-console
-        console.log('List item press')
-    }
-
-    const handleListItemLongPress = () => {
-        // tslint:disable-next-line:no-console
-        console.log('List item long press')
-    }
 
     return (
         <React.Fragment >
-            <ListItem
-                onPress={handleListItemPress}
-                onLongPress={handleListItemLongPress}
-            >
+            <ListItem onPress={onPress} >
                 <Avatar >
                     {name.charAt(0).toUpperCase()}
                 </Avatar >

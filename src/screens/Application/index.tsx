@@ -1,15 +1,19 @@
 import { createStackNavigator } from 'react-navigation'
 
-import HomeScreen from './Home'
+import ProductScreen from './Product'
+import ProductsScreen from './Products'
 
 const ApplicationNavigation = createStackNavigator(
     {
-        Home: HomeScreen,
+        Products: ProductsScreen,
+        Product: ProductScreen,
     },
     {
+        initialRouteName: 'Products',
         navigationOptions: ({ navigation, screenProps }) => {
             return {}
         },
-    })
+    },
+)
 
 export default ApplicationNavigation
