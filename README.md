@@ -1,4 +1,3 @@
-# supply-tracker
+# react-native-supply-tracker
 
-- implement Google Sign In
-- implement Google drive .json upload/download
+- TODO :P
