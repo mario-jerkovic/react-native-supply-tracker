@@ -3,15 +3,15 @@ import { FlatList, ListRenderItemInfo } from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 import { connect } from 'react-redux'
 
-import { getLatestProductsSupply } from 'src/redux/modules'
+import { getProductsWithLatestSupply } from 'src/redux/modules'
 import { StoreState } from 'src/redux/types'
 
 import ProductListComponent from '../components/ProductList'
 import ProductListItemComponent from '../components/ProductListItem'
 
 type Props = {
-    products: ReturnType<typeof getLatestProductsSupply>,
-    navigation: NavigationScreenProp<any, any>
+    products: ReturnType<typeof getProductsWithLatestSupply>,
+    navigation: NavigationScreenProp<any, any>,
 }
 
 class ProductListContainer extends React.Component<Props> {
@@ -52,7 +52,7 @@ class ProductListContainer extends React.Component<Props> {
 
 export default connect(
     (state: StoreState) => ({
-        products: getLatestProductsSupply(state),
+        products: getProductsWithLatestSupply(state),
     }),
     null,
 )(ProductListContainer)
