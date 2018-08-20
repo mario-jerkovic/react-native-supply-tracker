@@ -37,10 +37,14 @@ export function getAppLoading(state: RootState) {
     )
 }
 
-export function getLatestProductsSupply(state: RootState) {
-    return fromInventory.getLatestProductsSupply(state.inventory)
+export function getProductsWithLatestSupply(state: RootState) {
+    return fromInventory.getProductsWithLatestSupply(state.inventory)
 }
 
 export function getProductById(productId: string, state: RootState) {
     return fromInventory.getProductById(productId, state.inventory)
+}
+
+export function getProductByIdWithLatestSupply(productId: string, state: RootState) {
+    return fromInventory.getProductByIdWithLatestSupply(productId, state.inventory)
 }

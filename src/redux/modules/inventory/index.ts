@@ -1,7 +1,7 @@
 import { getType } from 'typesafe-actions'
 
 import * as actions from './actions'
-import { Actions, State } from './types'
+import { Actions, State, Supply } from './types'
 
 const initialState: State = {
     loading: false,
@@ -31,14 +31,16 @@ export default (state: State = initialState, action: Actions) => {
     }
 }
 
-export function getLatestProductsSupply(state: State) {
+function sortSuppliesDESC(supplies: Supply[]) {
+    return supplies.sort((a, b) => (
+        new Date(a.createdTime).getTime() - new Date(b.createdTime).getTime()
+    ))
+}
+
+export function getProductsWithLatestSupply(state: State) {
     return state.products.map((product) => ({
-        id: product.id,
-        name: product.name,
-        image: product.photo,
-        supply: product.supplies.sort((a, b) => (
-            new Date(a.createdTime).getTime() - new Date(b.createdTime).getTime()
-        ))[0],
+        ...product,
+        supply: sortSuppliesDESC(product.supplies)[0],
     }))
 }
 
@@ -46,6 +48,15 @@ export function getProductById(productId: string, state: State) {
     return state.products.find((product) => (
         product.id === productId
     ))
+}
+
+export function getProductByIdWithLatestSupply(productId: string, state: State) {
+    const product = getProductById(productId, state)
+
+    return {
+        ...product,
+        supply: sortSuppliesDESC(product.supplies)[0],
+    }
 }
 
 export function getLoading(state: State) {
