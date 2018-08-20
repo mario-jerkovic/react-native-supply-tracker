@@ -22,10 +22,13 @@ const styles = StyleSheet.create({
         borderRadius: 2,
     },
     buttonText: {},
-    buttonContained: {
+    buttonTextContained: {
         elevation: 4,
         // Material design blue from https://material.google.com/style/color.html#color-color-palette
         backgroundColor: '#2196F3',
+    },
+    buttonDisabled: {
+        backgroundColor: 'rgba(0, 0, 0, 0.12)',
     },
     text: {
         padding: 8,
@@ -35,15 +38,18 @@ const styles = StyleSheet.create({
     textText: {
         color: '#2196F3',
     },
-    textContained: {
+    textTextContained: {
         color: '#fff',
+    },
+    textDisabled: {
+        color: 'rgba(0, 0, 0, 0.26)',
     },
 })
 
 const Button: React.SFC<Props> = (props) => {
     const {
         children,
-        disabled, // @TODO: implement disabled style
+        disabled,
         onPress,
         raised,
     } = props
@@ -52,12 +58,21 @@ const Button: React.SFC<Props> = (props) => {
     let buttonStyles: ViewStyle = styles.buttonText
 
     if (raised) {
-        textStyles = styles.textContained
-        buttonStyles = styles.buttonContained
+        textStyles = styles.textTextContained
+        buttonStyles = styles.buttonTextContained
+    }
+
+    if (disabled) {
+        textStyles = Object.assign({}, textStyles, styles.textDisabled)
+
+        if (raised) {
+            buttonStyles = Object.assign(buttonStyles, styles.buttonDisabled)
+        }
     }
 
     return (
         <TouchableRipple
+            disabled={disabled}
             onPress={onPress}
             rippleColor={textStyles.color}
         >
