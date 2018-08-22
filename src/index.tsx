@@ -12,7 +12,7 @@ const store = createStore(Api.build(true))({} as StoreState)
 const Application: React.SFC<{}> = () => {
     return (
         <StoreProvider store={store} >
-            <Root screenProps={{ test: 'test' }} />
+            <Root />
         </StoreProvider >
     )
 }
