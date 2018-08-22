@@ -16,6 +16,36 @@ type Props = {
     visible: boolean,
     title?: string,
 }
+
+const styles = StyleSheet.create({
+    backgroundOverlay: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    },
+    modalContainer: {
+        marginHorizontal: 16,
+        marginVertical: 106,
+        minWidth: 280,
+        borderRadius: 2,
+        elevation: 24,
+        overflow: 'hidden',
+        backgroundColor: '#fff',
+    },
+    modalContainerPadding: {
+        paddingTop: 24,
+    },
+    titleContainer: {
+        paddingHorizontal: 24,
+        paddingBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+})
+
 const MaterialDialog: React.SFC<Props> = (props) => {
     const {
         visible,
@@ -76,33 +106,5 @@ const MaterialDialog: React.SFC<Props> = (props) => {
         </Modal >
     )
 }
-const styles = StyleSheet.create({
-    backgroundOverlay: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    },
-    modalContainer: {
-        marginHorizontal: 16,
-        marginVertical: 106,
-        minWidth: 280,
-        borderRadius: 2,
-        elevation: 24,
-        overflow: 'hidden',
-        backgroundColor: '#fff',
-    },
-    modalContainerPadding: {
-        paddingTop: 24,
-    },
-    titleContainer: {
-        paddingHorizontal: 24,
-        paddingBottom: 20,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-})
 
 export default MaterialDialog
