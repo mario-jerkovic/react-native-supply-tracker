@@ -27,8 +27,8 @@ const TouchableRipple: React.SFC<Props> = (props) => {
         rippleColor,
         children,
         // https://github.com/palantir/tslint/issues/3870
-        // tslint:disable-next-line
-        ...other
+        // @ts-ignore
+        ...other,
     } = props
 
     const disabled = disabledProp || !other.onPress
