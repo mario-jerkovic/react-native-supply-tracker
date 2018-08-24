@@ -1,38 +1,36 @@
+import { FormikErrors, FormikProps, withFormik } from 'formik'
 import * as React from 'react'
-import { TextField } from 'react-native-material-textfield'
 import { NavigationScreenProp } from 'react-navigation'
 import { connect } from 'react-redux'
+import {
+    bindActionCreators,
+    compose,
+} from 'redux'
 
 import { getProductByIdWithLatestSupply } from 'src/redux/modules'
-import { StoreState } from 'src/redux/types'
+import { updateProductSupply } from 'src/redux/modules/inventory/asyncActions'
+import { StoreDispatcher, StoreState } from 'src/redux/types'
+
+import TextField from 'src/components/TextField'
 
 import ProductComponent from '../components/Product'
 import ProductActionsComponent from '../components/ProductActions'
 
-// @TODO
-// 1. handle Field errors
-// 2. handle tabbing trough fields
-// 3. handle returnKeyType
-// 4. disable save until all criteria are meet
-// 5. TextField wrapper for theme
+type FormValues = {
+    aPrice: string,
+    tPrice: string,
+}
 
 type Props = {
     product: ReturnType<typeof getProductByIdWithLatestSupply>
+    updateProductSupply: typeof updateProductSupply,
     navigation: NavigationScreenProp<any, any>,
 }
 
-type State = {
-    aPrice: string,
-    tPrice: string,
-    rAmount: string,
-}
+class ProductContainer extends React.Component<Props & FormikProps<FormValues>> {
 
-class ProductContainer extends React.Component<Props, State> {
-
-    public state: State = {
-        aPrice: '',
-        tPrice: '',
-        rAmount: this.props.product.supply.amount.toFixed(2),
+    public static calculateRemainingAmount(price: number, totalPrice: number, amount: number): number {
+        return amount - (totalPrice / price)
     }
 
     private fields = {
@@ -41,92 +39,123 @@ class ProductContainer extends React.Component<Props, State> {
     }
 
     public componentDidMount() {
-        // @ts-ignore
         this.fields.aPriceRef.current.focus()
     }
 
     public render() {
         const {
-            aPrice,
-            tPrice,
-            rAmount,
-        } = this.state
+            values,
+            errors,
+            touched,
+            isValid,
+            handleBlur,
+            handleChange,
+            product,
+        } = this.props
         const {
             aPriceRef,
             tPriceRef,
         } = this.fields
 
-        return (
-            <React.Fragment >
-                <ProductComponent >
-                    <TextField
-                        ref={aPriceRef}
-                        value={aPrice}
-                        label="Article price"
-                        keyboardType="numeric"
-                        onChangeText={this.handleArticlePriceChange}
-                    />
-                    <TextField
-                        ref={tPriceRef}
-                        value={tPrice}
-                        label="Total price"
-                        keyboardType="numeric"
-                        onChangeText={this.handleTotalPriceChange}
-                    />
-                    <TextField
-                        disabled={true}
-                        value={`${rAmount} kg`}
-                        label="Remaining amount"
-                    />
-                </ProductComponent >
-                <ProductActionsComponent
-                    onCancelPress={this.handleOnCancelPress}
-                    onSavePress={this.handleOnSavePress}
-                />
-            </React.Fragment >
-        )
-    }
+        let rAmount = product.supply.amount
 
-    private calcRemainingAmount() {
-        const {
-            product,
-        } = this.props
-        const {
-            aPrice,
-            tPrice,
-        } = this.state
-
-        const aPriceF = parseFloat(aPrice)
-        const tPriceF = parseFloat(tPrice)
-        let rAmountF = product.supply.amount
-
-        if (!isNaN(aPriceF) && !isNaN(tPriceF)) {
-            rAmountF = rAmountF - (tPriceF / aPriceF)
+        if (isValid) {
+            rAmount = ProductContainer.calculateRemainingAmount(
+                parseFloat(values.aPrice),
+                parseFloat(values.tPrice),
+                rAmount,
+            )
         }
 
-        this.setState(() => ({ rAmount: rAmountF.toFixed(2) }))
-    }
-
-    private handleArticlePriceChange = (aPrice: string) => {
-        this.setState(() => ({ aPrice }), this.calcRemainingAmount)
-    }
-
-    private handleTotalPriceChange = (tPrice: string) => {
-        this.setState(() => ({ tPrice }), this.calcRemainingAmount)
+        return (
+            <ProductComponent >
+                <TextField
+                    ref={aPriceRef}
+                    error={touched.aPrice ? errors.aPrice : ''}
+                    value={values.aPrice}
+                    label="Article price"
+                    keyboardType="numeric"
+                    // @ts-ignore
+                    onBlur={handleBlur('aPrice')}
+                    onChangeText={handleChange('aPrice')}
+                />
+                <TextField
+                    ref={tPriceRef}
+                    error={touched.tPrice ? errors.tPrice : ''}
+                    value={values.tPrice}
+                    label="Total price"
+                    keyboardType="numeric"
+                    // @ts-ignore
+                    onBlur={handleBlur('tPrice')}
+                    onChangeText={handleChange('tPrice')}
+                />
+                <TextField
+                    disabled={true}
+                    value={`${rAmount.toFixed(2)} kg`}
+                    label="Remaining amount"
+                />
+                <ProductActionsComponent
+                    onCancelPress={this.handleOnCancelPress}
+                    onSavePress={this.handleOnSavePres}
+                />
+            </ProductComponent >
+        )
     }
 
     private handleOnCancelPress = () => {
         this.props.navigation.goBack()
     }
 
-    private handleOnSavePress = () => {
-        // tslint:disable-next-line:no-console
-        console.log('Save', this.state)
+    private handleOnSavePres = () => {
+        this.fields.tPriceRef.current.blur()
+
+        this.props.handleSubmit()
     }
 }
 
-export default connect(
-    (state: StoreState, ownProps: Props) => ({
-        product: getProductByIdWithLatestSupply(ownProps.navigation.getParam('productId'), state),
+export default compose(
+    connect(
+        (state: StoreState, ownProps: Props) => ({
+            product: getProductByIdWithLatestSupply(ownProps.navigation.getParam('productId'), state),
+        }),
+        (dispatch: StoreDispatcher) => bindActionCreators({
+            updateProductSupply,
+        }, dispatch),
+    ),
+    withFormik<Props, FormValues>({
+        mapPropsToValues: () => ({
+            aPrice: '',
+            tPrice: '',
+        }),
+        validate: (values: FormValues) => {
+            const errors: FormikErrors<FormValues> = {}
+
+            if (!values.aPrice) {
+                errors.aPrice = 'Required'
+            }
+
+            if (!values.tPrice) {
+                errors.tPrice = 'Required'
+            }
+
+            return errors
+        },
+
+        handleSubmit: async (values, formikBag) => {
+            const {
+                props,
+                resetForm,
+            } = formikBag
+
+            const rAmount = ProductContainer.calculateRemainingAmount(
+                parseFloat(values.aPrice),
+                parseFloat(values.tPrice),
+                props.product.supply.amount,
+            )
+
+            await props.updateProductSupply(props.product.id, rAmount)
+
+            resetForm()
+        },
     }),
 )(ProductContainer)
