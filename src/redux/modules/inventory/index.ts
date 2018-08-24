@@ -33,7 +33,7 @@ export default (state: State = initialState, action: Actions) => {
 
 function sortSuppliesDESC(supplies: Supply[]) {
     return supplies.sort((a, b) => (
-        new Date(a.createdTime).getTime() - new Date(b.createdTime).getTime()
+        new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime()
     ))
 }
 
