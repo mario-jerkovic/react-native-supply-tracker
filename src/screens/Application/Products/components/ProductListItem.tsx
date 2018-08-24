@@ -26,7 +26,7 @@ const ProductListItemComponent: React.SFC<Props> = (props) => {
                 </Avatar >
                 <ListItemText
                     primary={name}
-                    secondary={`Available quantity: ${quantity} kg`}
+                    secondary={`Available quantity: ${quantity.toFixed(2)} kg`}
                 />
             </ListItem >
             <Divider inset={true} />
