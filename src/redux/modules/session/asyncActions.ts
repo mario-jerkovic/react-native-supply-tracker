@@ -14,7 +14,6 @@ export function loadGoogleSession(silently: boolean, successCb?: () => void) {
                 dispatch(actions.loadSession.failure(Error('Error: no accessToken @TODO')))
             } else {
                 const user = await api.authentication.getCurrentUser()
-                // api.storage.accessToken = accessToken
 
                 dispatch(actions.loadSession.success({ accessToken, user }))
 
@@ -23,7 +22,8 @@ export function loadGoogleSession(silently: boolean, successCb?: () => void) {
                 }
             }
         } catch (error) {
-            dispatch(actions.loadSession.failure(Error('Error: loadSession @TODO')))
+            // tslint:disable-next-line no-console
+            console.error('loadGoogleSession error: ', error)
         }
     }
 }
