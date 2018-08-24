@@ -9,13 +9,13 @@ class StubGoogle implements AuthenticationApi {
     }
 
     public async signOut() {
-        await sleep(3000)
+        await sleep(1000)
 
         // stub implementation
     }
 
     public async getCurrentUser() {
-        await sleep(3000)
+        await sleep(1000)
 
         return {
             id: '123456',

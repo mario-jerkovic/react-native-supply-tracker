@@ -4,7 +4,7 @@ import sleep from 'src/utils/sleep'
 
 import { StorageApi } from './type'
 
-const dummyData: Product[] = [
+let dummyData: Product[] = [
     {
         id: guid(),
         name: 'Banana',
@@ -186,13 +186,15 @@ class StubGoogleDrive implements StorageApi {
     }
 
     public async getData() {
-        await sleep(3000)
+        await sleep(1000)
 
         return dummyData
     }
 
-    public async setData() {
-        await sleep(3000)
+    public async setData(data: Product[]) {
+        await sleep(1000)
+
+        dummyData = data
     }
 }
 
