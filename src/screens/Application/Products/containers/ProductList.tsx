@@ -32,7 +32,7 @@ class ProductListContainer extends React.Component<Props> {
     }
 
     private keyExtractor = (item: Props['products'][0]) => {
-        return item.id
+        return `${item.id}-${item.supply.id}`
     }
 
     private renderItem = (info: ListRenderItemInfo<Props['products'][0]>) => (
