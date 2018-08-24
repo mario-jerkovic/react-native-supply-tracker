@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux'
 
+import globalLoaderReducer from './globalLoader'
+import {
+    Actions as GlobalLoaderActions,
+    State as GlobalLoaderState,
+} from './globalLoader/types'
 import inventoryReducer, * as fromInventory from './inventory'
 import {
     Actions as InventoryActions,
@@ -12,15 +17,18 @@ import {
 } from './session/types'
 
 export type RootState = {
+    globalLoader: GlobalLoaderState,
     inventory: InventoryState,
     session: SessionState,
 }
 
 export type RootActions =
+    | GlobalLoaderActions
     | InventoryActions
     | SessionActions
 
 export default combineReducers<RootState, RootActions>({
+    globalLoader: globalLoaderReducer,
     inventory: inventoryReducer,
     session: sessionReducer,
 })
