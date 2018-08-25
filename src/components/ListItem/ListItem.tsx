@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     },
 })
 
+// @TODO: theme support
 const ListItem: React.SFC<Props> = (props) => {
     const {
         onPress,

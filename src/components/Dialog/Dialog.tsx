@@ -3,18 +3,16 @@ import {
     KeyboardAvoidingView,
     Modal,
     StyleSheet,
-    Text,
-    TouchableWithoutFeedback,
-    View,
+    View, ViewStyle,
 } from 'react-native'
-import { material } from 'react-native-typography'
+import withTheme, { WithThemeProps } from 'src/components/styles/withTheme'
 
 import DialogActions from './DialogActions'
 import DialogContent from './DialogContent'
+import DialogTitle from './DialogTitle'
 
 type Props = {
     visible: boolean,
-    title?: string,
 }
 
 const styles = StyleSheet.create({
@@ -31,47 +29,51 @@ const styles = StyleSheet.create({
         minWidth: 280,
         borderRadius: 2,
         elevation: 24,
-        overflow: 'hidden',
-        backgroundColor: '#fff',
     },
     modalContainerPadding: {
         paddingTop: 24,
     },
     titleContainer: {
-        paddingHorizontal: 24,
+        paddingTop: 24,
         paddingBottom: 20,
+        paddingHorizontal: 24,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
 })
 
-const MaterialDialog: React.SFC<Props> = (props) => {
+const MaterialDialog: React.SFC<Props & WithThemeProps> = (props) => {
     const {
         visible,
-        title,
         children,
+        theme,
     } = props
 
-    const containerStyles = [styles.modalContainer]
-
+    let titleComponent = null
     let contentComponent = null
     let actionsComponent = null
+
+    let containerStyles: ViewStyle[] = [styles.modalContainer, {
+        backgroundColor: theme.palette.background,
+    }]
 
     React.Children.forEach(React.Children.toArray(children), (child) => {
         if (typeof child === 'string' || typeof child === 'number') {
             return
         }
 
-        if (child.type === DialogContent) {
+        if (child.type === DialogTitle) {
+            titleComponent = child
+        } else if (child.type === DialogContent) {
             contentComponent = child
         } else if (child.type === DialogActions) {
             actionsComponent = child
         }
     })
 
-    if (title) {
-        containerStyles.push(styles.modalContainerPadding)
+    if (!titleComponent) {
+        containerStyles = [...containerStyles, styles.modalContainerPadding]
     }
 
     return (
@@ -82,29 +84,17 @@ const MaterialDialog: React.SFC<Props> = (props) => {
             hardwareAccelerated={true}
             supportedOrientations={['portrait', 'landscape']}
         >
-            <TouchableWithoutFeedback >
-                <View style={styles.backgroundOverlay} >
-                    <KeyboardAvoidingView >
-                        <View style={containerStyles} >
-                            <TouchableWithoutFeedback >
-                                <View >
-                                    {title ? (
-                                        <View style={styles.titleContainer} >
-                                            <Text style={material.title} >
-                                                {title}
-                                            </Text >
-                                        </View >
-                                    ) : null}
-                                    {contentComponent}
-                                    {actionsComponent}
-                                </View >
-                            </TouchableWithoutFeedback >
-                        </View >
-                    </KeyboardAvoidingView >
-                </View >
-            </TouchableWithoutFeedback >
+            <View style={styles.backgroundOverlay} >
+                <KeyboardAvoidingView >
+                    <View style={containerStyles}>
+                        {titleComponent}
+                        {contentComponent}
+                        {actionsComponent}
+                    </View >
+                </KeyboardAvoidingView>
+            </View>
         </Modal >
     )
 }
 
-export default MaterialDialog
+export default withTheme<Props>(MaterialDialog)

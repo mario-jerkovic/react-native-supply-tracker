@@ -8,8 +8,9 @@ const styles = StyleSheet.create({
         flex: -1,
     },
     rootPadding: {
-        paddingHorizontal: 24,
+        paddingTop: 0,
         paddingBottom: 24,
+        paddingHorizontal: 24,
     },
 })
 

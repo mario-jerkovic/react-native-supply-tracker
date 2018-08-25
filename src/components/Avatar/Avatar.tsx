@@ -12,10 +12,7 @@ type Props = {
     children: React.ReactElement<{ style?: any }> | string,
 }
 
-type T = {
-    style?: object,
-}
-
+// @TODO: theme support
 const styles = StyleSheet.create({
     root: {
         alignItems: 'center',

@@ -3,6 +3,7 @@ import {
     TextField as MaterialTextField,
     TextFieldProps as MaterialTextFieldProps,
 } from 'react-native-material-textfield'
+import { ThemeConsumer } from 'src/components/styles/themeContext'
 
 type Props = {}
 
@@ -34,35 +35,20 @@ class TextField extends React.PureComponent<Props & MaterialTextFieldProps> {
         } = this.props
 
         return (
-            <MaterialTextField
-                ref={this.textFieldRef}
-                {...other}
-                tintColor="#2196F3"
-                errorColor="#d32f2f"
-            />
+            <ThemeConsumer>
+                {(theme) => (
+                    <MaterialTextField
+                        ref={this.textFieldRef}
+                        {...other}
+                        textColor={theme.palette.textPrimary}
+                        tintColor={theme.palette.primary}
+                        errorColor={theme.palette.error}
+                        baseColor={theme.palette.textSecondary}
+                    />
+                )}
+            </ThemeConsumer>
         )
     }
 }
-
-// const TextField: React.SFC<Props & MaterialTextFieldProps> = (props) => {
-//     const {
-//         textColor,
-//         tintColor,
-//         baseColor,
-//         errorColor,
-//         // https://github.com/palantir/tslint/issues/3870
-//         // @ts-ignore
-//         ...other,
-//     } = props
-//
-//     console.log(props)
-//     return (
-//         <MaterialTextField
-//             {...other}
-//             tintColor="#2196F3"
-//             errorColor="#d32f2f"
-//         />
-//     )
-// }
 
 export default TextField

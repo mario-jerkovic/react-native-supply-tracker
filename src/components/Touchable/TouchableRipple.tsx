@@ -7,6 +7,8 @@ import {
     ViewStyle,
 } from 'react-native'
 
+import Color from 'color'
+
 const ANDROID_VERSION_LOLLIPOP = 21
 
 const supported = Platform.OS === 'android' && Platform.Version >= ANDROID_VERSION_LOLLIPOP
@@ -24,7 +26,7 @@ const TouchableRipple: React.SFC<Props> = (props) => {
     const {
         style,
         disabled: disabledProp,
-        rippleColor,
+        rippleColor: rippleColorProp,
         children,
         // https://github.com/palantir/tslint/issues/3870
         // @ts-ignore
@@ -33,11 +35,20 @@ const TouchableRipple: React.SFC<Props> = (props) => {
 
     const disabled = disabledProp || !other.onPress
 
+    let rippleColor
+
+    if (rippleColorProp) {
+        rippleColor = Color(rippleColorProp)
+            .alpha(0.25)
+            .toString()
+    }
+
     if (supported) {
         return (
             <View style={style} >
                 <TouchableNativeFeedback
                     {...other}
+                    style={style}
                     disabled={disabled}
                     background={TouchableNativeFeedback.Ripple(rippleColor, false)}
                 >

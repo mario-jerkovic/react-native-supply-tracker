@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
     root: {
         height: 52,
         flexDirection: 'row',
-        justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingHorizontal: 8,
+        justifyContent: 'flex-end',
         paddingVertical: 8,
+        paddingHorizontal: 8,
     },
     action: {
         marginVertical: 0,

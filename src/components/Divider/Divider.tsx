@@ -1,30 +1,34 @@
 import * as React from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
+import withTheme, { WithThemeProps } from 'src/components/styles/withTheme'
+
+import Color from 'color'
 
 type Props = {
     inset?: boolean,
-    style?: ViewStyle,
 }
 
 const styles = StyleSheet.create({
     root: {
         height: StyleSheet.hairlineWidth,
-        backgroundColor: 'rgba(0, 0, 0, 0.12)',
     },
 })
 
-const Divider: React.SFC<Props> = (props) => {
+const Divider: React.SFC<Props & WithThemeProps> = (props) => {
     const {
         inset,
-        style,
+        theme,
     } = props
 
-    const calcStyle = {
+    const calcStyle = [styles.root, {
         marginLeft: inset ? 72 : 0,
-    }
+        backgroundColor: Color(theme.palette.textPrimary)
+            .alpha(0.12)
+            .toString(),
+    }]
 
     return (
-        <View style={[styles.root, calcStyle, style]} />
+        <View style={calcStyle} />
     )
 }
 
@@ -32,4 +36,4 @@ Divider.defaultProps = {
     inset: false,
 }
 
-export default Divider
+export default withTheme<Props>(Divider)
