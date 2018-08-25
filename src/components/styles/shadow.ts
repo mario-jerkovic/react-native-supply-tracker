@@ -1,5 +1,3 @@
-// @TODO: Implement color palette
-
 export default function shadow(elevation: number) {
     const width = 0
     let height = 0
