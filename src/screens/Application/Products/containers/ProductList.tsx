@@ -1,5 +1,8 @@
 import * as React from 'react'
-import { FlatList, ListRenderItemInfo } from 'react-native'
+import {
+    FlatList,
+    ListRenderItemInfo,
+} from 'react-native'
 import { NavigationScreenProp } from 'react-navigation'
 import { connect } from 'react-redux'
 
@@ -39,13 +42,14 @@ class ProductListContainer extends React.Component<Props> {
         <ProductListItemComponent
             name={info.item.name}
             quantity={info.item.supply.amount}
-            onPress={this.handleListItemPress(info.item.id)}
+            onPress={this.handleListItemPress(info.item.id, info.item.name)}
         />
     )
 
-    private handleListItemPress = (productId: string) => () => {
+    private handleListItemPress = (productId: string, productName: string) => () => {
         this.props.navigation.navigate('Product', {
             productId,
+            productName,
         })
     }
 }
