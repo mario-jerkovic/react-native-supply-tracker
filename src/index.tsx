@@ -17,9 +17,9 @@ const uiTheme = createTheme(lightTheme)
 const Application: React.SFC<{}> = () => {
     return (
         <StoreProvider store={store} >
-            <ThemeProvider value={uiTheme}>
-                <Root/>
-            </ThemeProvider>
+            <ThemeProvider value={uiTheme} >
+                <Root />
+            </ThemeProvider >
         </StoreProvider >
     )
 }

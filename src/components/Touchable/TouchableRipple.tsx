@@ -19,21 +19,17 @@ type Props = {
     onLongPress?: () => void
     rippleColor?: string,
     children: React.ReactNode,
-    style?: ViewStyle,
 }
 
 const TouchableRipple: React.SFC<Props> = (props) => {
     const {
-        style,
+        onPress,
         disabled: disabledProp,
         rippleColor: rippleColorProp,
         children,
-        // https://github.com/palantir/tslint/issues/3870
-        // @ts-ignore
-        ...other,
     } = props
 
-    const disabled = disabledProp || !other.onPress
+    const disabled = disabledProp || !onPress
 
     let rippleColor
 
@@ -45,24 +41,20 @@ const TouchableRipple: React.SFC<Props> = (props) => {
 
     if (supported) {
         return (
-            <View style={style} >
-                <TouchableNativeFeedback
-                    {...other}
-                    style={style}
-                    disabled={disabled}
-                    background={TouchableNativeFeedback.Ripple(rippleColor, false)}
-                >
-                    {React.Children.only(children)}
-                </TouchableNativeFeedback >
-            </View >
+            <TouchableNativeFeedback
+                onPress={onPress}
+                disabled={disabled}
+                background={TouchableNativeFeedback.Ripple(rippleColor, false)}
+            >
+                {React.Children.only(children)}
+            </TouchableNativeFeedback >
         )
     }
 
     return (
         <TouchableHighlight
-            {...other}
+            onPress={onPress}
             disabled={disabled}
-            style={style}
             underlayColor={rippleColor}
         >
             {React.Children.only(children)}

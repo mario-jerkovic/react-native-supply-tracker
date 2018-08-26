@@ -48,7 +48,7 @@ export default function createTheme(theme: ColorPalette): Theme {
             primary: primaryColor,
             onPrimary: Color(primaryColor).isDark() ? white : black,
             primaryVariant: Color(primaryColor)
-                .darken(0.54)
+                .darken(0.25)
                 .toString(),
             secondary: secondaryColor,
             onSecondary: Color(secondaryColor).isDark() ? white : black,
