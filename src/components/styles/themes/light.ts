@@ -1,6 +1,6 @@
 export default {
-    primaryColor: '#2196f3',
-    secondaryColor: '#f50057',
+    primaryColor: '#673ab7',
+    secondaryColor: '#c6ff00',
     backgroundColor: '#ffffff',
     errorColor: '#b00020',
 }

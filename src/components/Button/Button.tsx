@@ -18,8 +18,9 @@ import TouchableRipple from '../Touchable/TouchableRipple'
 type Props = {
     color?: 'primary' | 'secondary',
     variant?: 'flat' | 'contained' | 'fab',
-    children: string,
     onPress: () => void,
+    children: string,
+    style?: ViewStyle,
 }
 
 const styles = StyleSheet.create({
@@ -39,9 +40,10 @@ const styles = StyleSheet.create({
 const Button: React.SFC<Props & WithThemeProps> = (props) => {
     const {
         color,
-        children,
-        onPress,
         variant,
+        onPress,
+        children,
+        style: styleProp,
         theme,
     } = props
 
@@ -93,7 +95,7 @@ const Button: React.SFC<Props & WithThemeProps> = (props) => {
     }
 
     return (
-        <View style={rootStyles} >
+        <View style={[rootStyles, styleProp]} >
             <TouchableRipple
                 onPress={onPress}
                 rippleColor={rippleColor}
