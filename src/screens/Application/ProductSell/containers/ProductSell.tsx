@@ -13,8 +13,8 @@ import { StoreDispatcher, StoreState } from 'src/redux/types'
 
 import TextField from 'src/components/TextField'
 
-import ProductComponent from '../components/Product'
-import ProductActionsComponent from '../components/ProductActions'
+import ProductSellComponent from '../components/ProductSell'
+import ProductSellActionsComponent from '../components/ProductSellActions'
 
 type FormValues = {
     aPrice: string,
@@ -27,7 +27,7 @@ type Props = {
     navigation: NavigationScreenProp<any, any>,
 }
 
-class ProductContainer extends React.Component<Props & FormikProps<FormValues>> {
+class ProductSellContainer extends React.Component<Props & FormikProps<FormValues>> {
 
     public static calculateRemainingAmount(price: number, totalPrice: number, amount: number): number {
         return amount - (totalPrice / price)
@@ -60,7 +60,7 @@ class ProductContainer extends React.Component<Props & FormikProps<FormValues>> 
         let rAmount = product.supply.amount
 
         if (isValid) {
-            rAmount = ProductContainer.calculateRemainingAmount(
+            rAmount = ProductSellContainer.calculateRemainingAmount(
                 parseFloat(values.aPrice),
                 parseFloat(values.tPrice),
                 rAmount,
@@ -68,7 +68,7 @@ class ProductContainer extends React.Component<Props & FormikProps<FormValues>> 
         }
 
         return (
-            <ProductComponent >
+            <ProductSellComponent >
                 <TextField
                     ref={aPriceRef}
                     error={touched.aPrice ? errors.aPrice : ''}
@@ -94,11 +94,11 @@ class ProductContainer extends React.Component<Props & FormikProps<FormValues>> 
                     value={`${rAmount.toFixed(2)} kg`}
                     label="Remaining amount"
                 />
-                <ProductActionsComponent
+                <ProductSellActionsComponent
                     onCancelPress={this.handleOnCancelPress}
                     onSavePress={this.handleOnSavePres}
                 />
-            </ProductComponent >
+            </ProductSellComponent >
         )
     }
 
@@ -147,7 +147,7 @@ export default compose(
                 resetForm,
             } = formikBag
 
-            const rAmount = ProductContainer.calculateRemainingAmount(
+            const rAmount = ProductSellContainer.calculateRemainingAmount(
                 parseFloat(values.aPrice),
                 parseFloat(values.tPrice),
                 props.product.supply.amount,
@@ -158,4 +158,4 @@ export default compose(
             resetForm()
         },
     }),
-)(ProductContainer)
+)(ProductSellContainer)

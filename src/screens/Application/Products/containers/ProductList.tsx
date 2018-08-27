@@ -24,7 +24,7 @@ class ProductListContainer extends React.Component<Props> {
         } = this.props
 
         return (
-            <ProductListComponent >
+            <ProductListComponent onFabPress={this.handleFabPress}>
                 <FlatList
                     data={products}
                     keyExtractor={this.keyExtractor}
@@ -46,8 +46,12 @@ class ProductListContainer extends React.Component<Props> {
         />
     )
 
+    private handleFabPress = () => {
+        this.props.navigation.navigate('ProductNew')
+    }
+
     private handleListItemPress = (productId: string, productName: string) => () => {
-        this.props.navigation.navigate('Product', {
+        this.props.navigation.navigate('ProductSell', {
             productId,
             productName,
         })

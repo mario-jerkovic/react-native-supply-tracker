@@ -1,7 +1,8 @@
 import { createStackNavigator } from 'react-navigation'
 
-import ProductScreen from './Product'
+import ProductNewScreen from './ProductNew'
 import ProductsScreen from './Products'
+import ProductSellScreen from './ProductSell'
 
 import screen from '../screen'
 
@@ -10,7 +11,10 @@ const ApplicationNavigation = createStackNavigator(
         Products: screen(ProductsScreen, () => ({
             title: 'Products',
         })),
-        Product: screen(ProductScreen, ({ navigation }) => ({
+        ProductNew: screen(ProductNewScreen, () => ({
+            title: 'New product',
+        })),
+        ProductSell: screen(ProductSellScreen, ({ navigation }) => ({
             title: navigation.getParam('productName', 'Product'),
         })),
     },

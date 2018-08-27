@@ -5,7 +5,9 @@ import {
 } from 'react-native'
 import Button from 'src/components/Button/Button'
 
-type Props = {}
+type Props = {
+    onFabPress: () => void,
+}
 
 const styles = StyleSheet.create({
     root: {},
@@ -18,13 +20,9 @@ const styles = StyleSheet.create({
 
 const ProductListComponent: React.SFC<Props> = (props) => {
     const {
+        onFabPress,
         children,
     } = props
-
-    const tempOnPress = () => {
-        // tslint:disable-next-line no-console
-        console.log('press')
-    }
 
     return (
         <View style={styles.root} >
@@ -33,7 +31,7 @@ const ProductListComponent: React.SFC<Props> = (props) => {
                 color="secondary"
                 variant="fab"
                 style={styles.fab}
-                onPress={tempOnPress}
+                onPress={onFabPress}
             >
                 X
             </Button >
